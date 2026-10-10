@@ -2,40 +2,48 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>U.S.S. Discovery — Conning Tower</title>
   
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
+    html, body {
+      width: 100%;
+      height: 100%;
       background: #030712;
       color: #00f0ff;
       font-family: system-ui, -apple-system, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      overflow: hidden;
     }
 
-    /* Header Plancia */
+    /* Header Plancia (Altezza fissa 40px) */
     .bridge-header {
+      width: 100%;
+      height: 40px;
       background: #080e1c;
       border-bottom: 2px solid #00f0ff;
-      padding: 10px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+      padding: 0 12px;
     }
-    .bridge-title { font-size: 11px; font-weight: 900; color: #fff; letter-spacing: 1.5px; text-transform: uppercase; }
-    .bridge-sub { font-size: 8px; color: #94a3b8; letter-spacing: 1px; }
+    .bridge-title { 
+      font-size: 10px; 
+      font-weight: 900; 
+      color: #fff; 
+      letter-spacing: 1px; 
+      text-transform: uppercase; 
+    }
 
-    /* Barra di Navigazione Tattica (Scorribile su mobile) */
+    /* Barra di Navigazione Tattica (Altezza fissa 44px) */
     .tactical-nav {
+      width: 100%;
+      height: 44px;
       background: #0d1527;
       border-bottom: 1px solid rgba(0, 240, 255, 0.3);
-      padding: 8px;
       display: flex;
       gap: 6px;
+      padding: 6px;
       overflow-x: auto;
       white-space: nowrap;
       -webkit-overflow-scrolling: touch;
@@ -45,45 +53,34 @@
       background: rgba(13, 25, 48, 0.9);
       color: #00f0ff;
       border: 1px solid rgba(0, 240, 255, 0.4);
-      padding: 8px 12px;
-      border-radius: 6px;
+      padding: 4px 10px;
+      border-radius: 4px;
       font-size: 9px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       cursor: pointer;
       flex-shrink: 0;
-      transition: all 0.2s;
-    }
-
-    .tactical-btn:hover {
-      background: rgba(0, 240, 255, 0.2);
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
     }
 
     .tactical-btn.active {
       background: #00f0ff;
       color: #030712;
       font-weight: 900;
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.8);
-      border-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
     }
 
-    /* Variazioni cromatiche bottoni */
     .tactical-btn.amber { border-color: #facc15; color: #facc15; }
-    .tactical-btn.amber.active { background: #facc15; color: #030712; box-shadow: 0 0 15px rgba(250, 204, 21, 0.8); }
+    .tactical-btn.amber.active { background: #facc15; color: #030712; box-shadow: 0 0 10px rgba(250, 204, 21, 0.8); }
 
     .tactical-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
-    .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 15px rgba(255, 42, 95, 0.8); }
+    .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 10px rgba(255, 42, 95, 0.8); }
 
-    /* Schermo Centrale Viewscreen */
+    /* Schermo Centrale Viewscreen (Occupa esattamente lo spazio rimanente: 100vh - 84px) */
     .viewscreen-container {
-      flex: 1;
       width: 100%;
-      min-height: 75vh;
+      height: calc(100vh - 84px);
       background: #000;
-      border: 3px solid #00f0ff;
-      position: relative;
     }
 
     #viewscreen-iframe {
@@ -91,7 +88,6 @@
       height: 100%;
       border: none;
       display: block;
-      min-height: 75vh;
     }
   </style>
 </head>
@@ -99,11 +95,8 @@
 
   <!-- Header -->
   <header class="bridge-header">
-    <div>
-      <div class="bridge-title">U.S.S. Discovery — Conning Tower</div>
-      <div class="bridge-sub">Nowcasting Italia Master Control</div>
-    </div>
-    <div style="font-size: 8px; color: #4ade80; font-weight: 800;">● TACTICAL LINK OK</div>
+    <div class="bridge-title">U.S.S. Discovery — Conning Tower</div>
+    <div style="font-size: 7px; color: #4ade80; font-weight: 800;">● ONLINE</div>
   </header>
 
   <!-- Pulsanti di Navigazione Tattica -->
@@ -112,23 +105,23 @@
       ⚡ Global Chaser
     </button>
     <button class="tactical-btn amber" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/', this)">
-      🛰️ Storm Tracker Reale
+      🛰️ Storm Tracker
     </button>
     <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">
-      🌐 Mesoscale TITAN 3D
+      🌐 Mesoscale TITAN
     </button>
     <button class="tactical-btn" onclick="switchTracker('./global-centroids.html', this)">
-      🌍 Global Centroids
+      🌍 Centroids
     </button>
     <button class="tactical-btn" onclick="switchTracker('./regional-cells.html', this)">
-      🇮🇹 Regional Radar
+      🇮🇹 Regional
     </button>
   </nav>
 
   <!-- Viewscreen Principale -->
-  <main class="viewscreen-container">
+  <div class="viewscreen-container">
     <iframe id="viewscreen-iframe" src="https://19francomenenti73-dev.github.io/nowcasting-italia-3d-storm-chaser-track/" allowfullscreen></iframe>
-  </main>
+  </div>
 
   <script>
     function switchTracker(url, btnElement) {
