@@ -3,170 +3,268 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nowcasting Italia - Master Control Dashboard</title>
+  <title>U.S.S. Discovery - Command Viewscreen</title>
   
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       width: 100%;
       height: 100vh;
-      background: #090d16;
-      color: #f8fafc;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #030712;
+      color: #00f0ff;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
       overflow: hidden;
       display: flex;
       flex-direction: column;
     }
 
-    /* Header Plancia di Comando Stile Star Trek Discovery */
-    .command-header {
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(9, 13, 22, 0.95) 100%);
-      border-bottom: 2px solid rgba(56, 189, 248, 0.4);
-      padding: 10px 16px;
+    /* Top Status Bar */
+    .top-bar {
+      height: 38px;
+      background: rgba(10, 15, 30, 0.95);
+      border-bottom: 2px solid #00f0ff;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 1000;
-      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.8);
-      flex-wrap: wrap;
-      gap: 10px;
+      padding: 0 16px;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+      z-index: 100;
     }
-
-    .brand-section {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-title {
+    .top-title {
+      font-weight: 800;
       font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #00f0ff;
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.8);
+    }
+    .top-sub {
+      font-size: 10px;
+      color: #94a3b8;
+      letter-spacing: 1px;
+    }
+
+    /* Main Console Layout Grid */
+    .console-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 210px 1fr 200px;
+      gap: 12px;
+      padding: 12px;
+      height: calc(100vh - 68px);
+    }
+
+    /* Pannello Sinistro: Pulsanti Tattici LCARS */
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 12px;
+      padding: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .lcars-btn {
+      background: rgba(15, 23, 42, 0.9);
+      color: #00f0ff;
+      border: 2px solid #00f0ff;
+      border-radius: 8px;
+      padding: 12px 8px;
+      font-size: 10px;
       font-weight: 800;
       letter-spacing: 1px;
-      color: #38bdf8;
       text-transform: uppercase;
-    }
-
-    .brand-subtitle {
-      font-size: 10px;
-      color: #94a3b8;
-      letter-spacing: 0.5px;
-    }
-
-    /* Pulsanti della Plancia (5 Selezioni) */
-    .control-tabs {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .tab-btn {
-      background: rgba(30, 41, 59, 0.7);
-      color: #94a3b8;
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 10px;
-      font-weight: 700;
       cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: all 0.25s ease;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+      text-align: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
     }
 
-    .tab-btn:hover {
+    .lcars-btn:hover {
+      background: rgba(0, 240, 255, 0.2);
+      box-shadow: 0 0 18px rgba(0, 240, 255, 0.6);
+      transform: translateX(4px);
+    }
+
+    .lcars-btn.active {
+      background: #00f0ff;
+      color: #030712;
+      box-shadow: 0 0 22px rgba(0, 240, 255, 0.9);
+      font-weight: 900;
+    }
+
+    .lcars-btn.red-alert {
+      border-color: #ff2a5f;
+      color: #ff2a5f;
+      box-shadow: 0 0 10px rgba(255, 42, 95, 0.2);
+    }
+    .lcars-btn.red-alert:hover {
+      background: rgba(255, 42, 95, 0.25);
+      box-shadow: 0 0 18px rgba(255, 42, 95, 0.7);
+    }
+    .lcars-btn.red-alert.active {
+      background: #ff2a5f;
       color: #fff;
-      background: rgba(56, 189, 248, 0.15);
-      border-color: rgba(56, 189, 248, 0.6);
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+      box-shadow: 0 0 22px rgba(255, 42, 95, 0.9);
     }
 
-    .tab-btn.active {
-      background: #38bdf8;
-      color: #090d16;
-      border-color: #38bdf8;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+    .lcars-btn.amber {
+      border-color: #facc15;
+      color: #facc15;
+    }
+    .lcars-btn.amber.active {
+      background: #facc15;
+      color: #030712;
     }
 
-    /* Viewscreen Principale */
-    .viewscreen-container {
-      flex: 1;
-      width: 100%;
+    /* Area Schermo Centrale con Cornice Angolata */
+    .viewscreen-wrapper {
       position: relative;
-      background: #05070b;
-      border: 4px solid #1e293b;
-      border-top: none;
+      border: 3px solid #00f0ff;
+      border-radius: 18px;
+      clip-path: polygon(
+        0% 0%, 
+        100% 0%, 
+        100% calc(100% - 20px), 
+        calc(100% - 20px) 100%, 
+        0% 100%
+      );
+      box-shadow: inset 0 0 30px rgba(0, 240, 255, 0.3), 0 0 25px rgba(0, 240, 255, 0.35);
+      background: #000;
     }
 
-    #tracker-frame {
+    #command-iframe {
       width: 100%;
       height: 100%;
       border: none;
       display: block;
     }
 
-    /* Status Bar Inferiore */
-    .command-footer {
-      background: #05070b;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 4px 16px;
-      font-size: 9px;
-      color: #64748b;
+    /* Pannello Destro: Telemetria e Dati */
+    .right-panel {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    .telemetry-block {
+      border-bottom: 1px dashed rgba(0, 240, 255, 0.3);
+      padding-bottom: 8px;
+    }
+    .telemetry-row {
       display: flex;
       justify-content: space-between;
-      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .t-label { color: #94a3b8; font-weight: 600; }
+    .t-val { font-weight: 800; color: #00f0ff; }
+    .t-val.ok { color: #4ade80; }
+
+    /* Footer Plancia Targa */
+    .bottom-tribute {
+      height: 30px;
+      background: #030712;
+      border-top: 1px solid rgba(0, 240, 255, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      font-weight: 800;
+      color: #94a3b8;
       text-transform: uppercase;
+    }
+
+    /* Responsive per schermi stretti/mobile */
+    @media (max-width: 850px) {
+      .console-body {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        overflow-y: auto;
+      }
+      .right-panel { display: none; }
+      .left-panel { flex-direction: row; flex-wrap: wrap; }
+      .lcars-btn { flex: 1; min-width: 120px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Plancia di Comando Superiore -->
-  <header class="command-header">
-    <div class="brand-section">
-      <div>
-        <div class="brand-title">U.S.S. Discovery — Conning Tower</div>
-        <div class="brand-subtitle">Nowcasting Italia Master Control</div>
+  <!-- Top Header -->
+  <div class="top-bar">
+    <div class="top-title">U.S.S. DISCOVERY — CONNING TOWER</div>
+    <div class="top-sub">NOWCASTING ITALIA MASTER CONTROL</div>
+  </div>
+
+  <!-- Main Console -->
+  <div class="console-body">
+    
+    <!-- Pulsanti Verticali Tattici (Sinistra) -->
+    <div class="left-panel">
+      <button class="lcars-btn active" onclick="loadTracker('https://19francomenenti73-dev.github.io/nowcasting-italia-3d-storm-chaser-track/', this)">
+        [ GLOBAL CHASER ]
+      </button>
+
+      <button class="lcars-btn amber" onclick="loadTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/', this)">
+        [ STORM TRACKER ]
+      </button>
+
+      <button class="lcars-btn red-alert" onclick="loadTracker('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">
+        [ MESOSCALE TITAN 3D ]
+      </button>
+
+      <button class="lcars-btn" onclick="loadTracker('./global-centroids.html', this)">
+        [ GLOBAL CENTROIDS ]
+      </button>
+
+      <button class="lcars-btn" onclick="loadTracker('./regional-cells.html', this)">
+        [ REGIONAL RADAR ]
+      </button>
+    </div>
+
+    <!-- Viewscreen Centrale (Iframe) -->
+    <div class="viewscreen-wrapper">
+      <iframe id="command-iframe" src="https://19francomenenti73-dev.github.io/nowcasting-italia-3d-storm-chaser-track/" allowfullscreen></iframe>
+    </div>
+
+    <!-- Telemetria Tattica (Destra) -->
+    <div class="right-panel">
+      <div class="telemetry-block">
+        <div class="telemetry-row"><span class="t-label">POWER:</span><span class="t-val ok">NOMINAL</span></div>
+        <div class="telemetry-row"><span class="t-label">SENSORS:</span><span class="t-val ok">ACTIVE</span></div>
+        <div class="telemetry-row"><span class="t-label">TRACKER:</span><span class="t-val ok">ONLINE</span></div>
+      </div>
+      
+      <div class="telemetry-block">
+        <div class="telemetry-row"><span class="t-label">CONVECTIVE CELLS:</span><span class="t-val">ACTIVE</span></div>
+        <div class="telemetry-row"><span class="t-label">CENTROIDS:</span><span class="t-val" style="color:#ff2a5f;">SCANNING</span></div>
+      </div>
+
+      <div style="margin-top:auto; font-size: 8px; color: #64748b; text-align: center;">
+        SYSTEM VERSION 4.2.0<br>ORBITAL SYNC OK
       </div>
     </div>
 
-    <div class="control-tabs">
-      <button class="tab-btn active" onclick="switchTracker('https://19francomenenti73-dev.github.io/nowcasting-italia-3d-storm-chaser-track/', this)">
-        ⚡ Global Chaser
-      </button>
-      <button class="tab-btn" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/', this)">
-        🛰️ Storm Tracker Reale
-      </button>
-      <button class="tab-btn" onclick="switchTracker('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">
-        🌐 Mesoscale TITAN 3D
-      </button>
-      <button class="tab-btn" onclick="switchTracker('./global-centroids.html', this)">
-        🌍 Global Centroids
-      </button>
-      <button class="tab-btn" onclick="switchTracker('./regional-cells.html', this)">
-        🇮🇹 Regional Radar
-      </button>
-    </div>
-  </header>
-
-  <!-- Schermo Principale (Iframe) -->
-  <div class="viewscreen-container">
-    <iframe id="tracker-frame" src="https://19francomenenti73-dev.github.io/nowcasting-italia-3d-storm-chaser-track/" allowfullscreen></iframe>
   </div>
 
-  <!-- Barra di Stato -->
-  <footer class="command-footer">
-    <span>Tactical Sensors: Online</span>
-    <span>Sistemi Attivi: 5/5</span>
-    <span>For Storm Chasers Only</span>
-  </footer>
+  <!-- Bottom Tribute Bar -->
+  <div class="bottom-tribute">
+    COMMAND VIEWSCREEN — "DISCOVERY" TRIBUTE // FOR STORM CHASERS ONLY
+  </div>
 
   <script>
-    function switchTracker(url, btnElement) {
-      document.getElementById('tracker-frame').src = url;
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    function loadTracker(url, btnElement) {
+      document.getElementById('command-iframe').src = url;
+      document.querySelectorAll('.lcars-btn').forEach(b => b.classList.remove('active'));
       btnElement.classList.add('active');
     }
   </script>
