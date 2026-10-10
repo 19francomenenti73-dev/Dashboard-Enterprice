@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>U.S.S. Discovery — Conning Tower</title>
+  <title>Nowcasting Italia — Conning Tower</title>
   
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -19,7 +19,7 @@
     /* Top Bridge Header */
     .bridge-topbar {
       width: 100%;
-      height: 48px;
+      height: 44px;
       background: linear-gradient(180deg, #0b1329 0%, #040814 100%);
       border-bottom: 2px solid #00f0ff;
       box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
@@ -29,61 +29,73 @@
       padding: 0 12px;
     }
 
-    /* Logo Vettoriale Pulsante in Blu Elettrico */
-    .brand-logo-container {
+    /* Logo Vettoriale e Scritta Pulsante in Blu Elettrico */
+    .pulsing-brand {
       display: flex;
       align-items: center;
-      height: 100%;
-    }
-    .pulsing-logo {
-      height: 36px;
-      width: 36px;
+      gap: 6px;
       animation: electric-pulse 2s infinite ease-in-out;
-      filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.7));
-    }
-    @keyframes electric-pulse {
-      0% { transform: scale(1); filter: drop-shadow(0 0 4px rgba(0, 240, 255, 0.5)); }
-      50% { transform: scale(1.06); filter: drop-shadow(0 0 12px rgba(0, 240, 255, 1)); }
-      100% { transform: scale(1); filter: drop-shadow(0 0 4px rgba(0, 240, 255, 0.5)); }
     }
 
-    /* Badge di Stato con LED Verde Pulsante */
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.8));
+    }
+
+    .brand-text {
+      font-size: 11px;
+      font-weight: 900;
+      color: #00f0ff;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.8);
+      line-height: 1.1;
+    }
+
+    @keyframes electric-pulse {
+      0% { opacity: 0.8; filter: drop-shadow(0 0 4px rgba(0, 240, 255, 0.4)); transform: scale(1); }
+      50% { opacity: 1; filter: drop-shadow(0 0 14px rgba(0, 240, 255, 1)); transform: scale(1.02); }
+      100% { opacity: 0.8; filter: drop-shadow(0 0 4px rgba(0, 240, 255, 0.4)); transform: scale(1); }
+    }
+
+    /* Badge di Stato con LED Verde */
     .status-badge {
       font-size: 8px;
       color: #4ade80;
       font-weight: 900;
       background: rgba(74, 222, 128, 0.1);
       border: 1px solid rgba(74, 222, 128, 0.3);
-      padding: 4px 8px;
+      padding: 3px 6px;
       border-radius: 4px;
       white-space: nowrap;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
     }
     .status-led {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
       background: #4ade80;
       border-radius: 50%;
-      box-shadow: 0 0 8px #4ade80;
+      box-shadow: 0 0 6px #4ade80;
       animation: led-blink 1.5s infinite;
     }
     @keyframes led-blink {
       0% { opacity: 0.3; }
-      50% { opacity: 1; box-shadow: 0 0 12px #4ade80; }
+      50% { opacity: 1; box-shadow: 0 0 10px #4ade80; }
       100% { opacity: 0.3; }
     }
 
     /* Barra Navigazione Tattica (Scorribile) */
     .tactical-nav {
       width: 100%;
-      height: 44px;
+      height: 40px;
       background: #080e1c;
       border-bottom: 1px solid rgba(0, 240, 255, 0.3);
       display: flex;
       gap: 6px;
-      padding: 6px;
+      padding: 5px 8px;
       overflow-x: auto;
       white-space: nowrap;
       -webkit-overflow-scrolling: touch;
@@ -93,7 +105,7 @@
       background: rgba(10, 18, 36, 0.9);
       color: #00f0ff;
       border: 1px solid rgba(0, 240, 255, 0.5);
-      padding: 4px 10px;
+      padding: 3px 8px;
       border-radius: 4px;
       font-size: 9px;
       font-weight: 800;
@@ -113,20 +125,20 @@
       background: #00f0ff;
       color: #02040a;
       font-weight: 900;
-      box-shadow: 0 0 12px rgba(0, 240, 255, 0.9);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.9);
       border-color: #fff;
     }
 
     .lcars-btn.amber { border-color: #facc15; color: #facc15; }
-    .lcars-btn.amber.active { background: #facc15; color: #02040a; box-shadow: 0 0 12px rgba(250, 204, 21, 0.9); }
+    .lcars-btn.amber.active { background: #facc15; color: #02040a; box-shadow: 0 0 10px rgba(250, 204, 21, 0.9); }
 
     .lcars-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
-    .lcars-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 12px rgba(255, 42, 95, 0.9); }
+    .lcars-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 10px rgba(255, 42, 95, 0.9); }
 
     /* Schermo Principale Viewscreen */
     .viewscreen-container {
       width: 100%;
-      height: calc(100vh - 92px);
+      height: calc(100vh - 84px);
       background: #000;
     }
 
@@ -140,8 +152,55 @@
 </head>
 <body>
 
-  <!-- Top Bar con Logo Pulsante e Stato Tattico -->
+  <!-- Top Bar con Logo Vettoriale e Testo Pulsante -->
   <header class="bridge-topbar">
-    <div class="brand-logo-container">
-      <!-- Logo
-  
+    <div class="pulsing-brand">
+      <svg class="brand-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="42" stroke="#00f0ff" stroke-width="5" stroke-dasharray="10 5" opacity="0.8"/>
+        <circle cx="50" cy="50" r="26" stroke="#00f0ff" stroke-width="3" opacity="0.9"/>
+        <path d="M50 2V14 M50 86V98 M2 50H14 M86 50H98" stroke="#00f0ff" stroke-width="5" stroke-linecap="round"/>
+        <path d="M54 18L30 52H48L44 82L72 44H52L54 18Z" fill="#00f0ff" stroke="#ffffff" stroke-width="1"/>
+      </svg>
+      <div class="brand-text">Nowcasting<br>Italia</div>
+    </div>
+    
+    <div class="status-badge">
+      <div class="status-led"></div>
+      TACTICAL OK
+    </div>
+  </header>
+
+  <!-- Pulsanti Tattici -->
+  <nav class="tactical-nav">
+    <button class="lcars-btn active" onclick="switchSystem('https://19francomenenti73-dev.github.io/nowcasting-italia-3d-storm-chaser-track/', this)">
+      [ GLOBAL CHASER ]
+    </button>
+    <button class="lcars-btn amber" onclick="switchSystem('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/', this)">
+      [ STORM TRACKER ]
+    </button>
+    <button class="lcars-btn alert" onclick="switchSystem('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">
+      [ MESOSCALE TITAN ]
+    </button>
+    <button class="lcars-btn" onclick="switchSystem('./global-centroids.html', this)">
+      [ GLOBAL CENTROIDS ]
+    </button>
+    <button class="lcars-btn" onclick="switchSystem('./regional-cells.html', this)">
+      [ REGIONAL RADAR ]
+    </button>
+  </nav>
+
+  <!-- Viewscreen -->
+  <div class="viewscreen-container">
+    <iframe id="bridge-iframe" src="https://19francomenenti73-dev.github.io/nowcasting-italia-3d-storm-chaser-track/" allowfullscreen></iframe>
+  </div>
+
+  <script>
+    function switchSystem(url, btnElement) {
+      document.getElementById('bridge-iframe').src = url;
+      document.querySelectorAll('.lcars-btn').forEach(b => b.classList.remove('active'));
+      btnElement.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
