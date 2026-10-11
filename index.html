@@ -189,14 +189,15 @@
 
   <script>
     function switchTracker(url, btnElement) {
-      document.getElementById('viewscreen-iframe').src = url;
+      document.getElementById('viewscreen-iframe'].src = url;
       document.querySelectorAll('.tactical-btn').forEach(b => b.classList.remove('active'));
       btnElement.classList.add('active');
     }
 
-    // Sintetizzatore Audio di Bordo (Web Audio API)
+    // Sintetizzatore Ambient Spaziale (Pulito e Armonico)
     let audioCtx = null;
-    let osc1 = null, osc2 = null, gainNode = null, filterNode = null;
+    let oscs = [];
+    let gainNode = null;
     let isPlaying = false;
 
     function toggleMusic() {
@@ -211,36 +212,49 @@
           audioCtx.resume();
         }
 
-        osc1 = audioCtx.createOscillator();
-        osc2 = audioCtx.createOscillator();
+        // Accordatura spaziale in armonia (Frequenze pulite in accordo di pad elettronico)
+        const freqs = [220, 329.63, 440, 554.37]; 
+        oscs = [];
+
         gainNode = audioCtx.createGain();
-        filterNode = audioCtx.createBiquadFilter();
-
-        osc1.type = 'sawtooth';
-        osc1.frequency.setValueAtTime(65.41, audioCtx.currentTime);
-        
-        osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(130.81, audioCtx.currentTime);
-
-        filterNode.type = 'lowpass';
-        filterNode.frequency.setValueAtTime(300, audioCtx.currentTime);
-
-        gainNode.gain.setValueAtTime(0.06, audioCtx.currentTime);
-
-        osc1.connect(filterNode);
-        osc2.connect(filterNode);
-        filterNode.connect(gainNode);
+        gainNode.gain.setValueAtTime(0.001, audioCtx.currentTime);
+        // Effetto dissolvenza in apertura per evitare scatti
+        gainNode.gain.linearRampToValueAtTime(0.07, audioCtx.currentTime + 1.2);
         gainNode.connect(audioCtx.destination);
 
-        osc1.start();
-        osc2.start();
+        freqs.forEach((f, index) => {
+          const osc = audioCtx.createOscillator();
+          // Usiamo onde sinusoidali e triangolari per un suono morbido e futuristico (niente motori!)
+          osc.type = index % 2 === 0 ? 'sine' : 'triangle';
+          osc.frequency.setValueAtTime(f, audioCtx.currentTime);
+          
+          // Leggerissimo detune per creare un effetto spaziale avvolgente (tipo coro o pad analogico)
+          osc.detune.setValueAtTime(index * 2.5, audioCtx.currentTime);
+
+          osc.connect(gainNode);
+          osc.start();
+          oscs.push(osc);
+        });
 
         isPlaying = true;
         btn.classList.add('playing');
         btn.innerText = '🎶';
       } else {
-        if (osc1) { osc1.stop(); osc1.disconnect(); }
-        if (osc2) { osc2.stop(); osc2.disconnect(); }
+        if (gainNode && audioCtx) {
+          // Dissolvenza in chiusura pulita
+          gainNode.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+          setTimeout(() => {
+            oscs.forEach(osc => {
+              try { osc.stop(); osc.disconnect(); } catch(e){}
+            });
+            oscs = [];
+          }, 400);
+        } else {
+          oscs.forEach(osc => {
+            try { osc.stop(); osc.disconnect(); } catch(e){}
+          });
+          oscs = [];
+        }
         
         isPlaying = false;
         btn.classList.remove('playing');
