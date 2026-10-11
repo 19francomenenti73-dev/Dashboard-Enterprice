@@ -1,4 +1,4 @@
-l<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
@@ -45,10 +45,53 @@ l<!DOCTYPE html>
       100% { opacity: 0.6; text-shadow: 0 0 4px rgba(0,240,255,0.4); }
     }
 
+    .header-right-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
     .status-ok {
       font-size: 8px;
       color: #4ade80;
       font-weight: 800;
+    }
+
+    /* Pulsante Audio Tattico: Verde in Standby */
+    .audio-tactical-btn {
+      background: rgba(8, 14, 28, 0.9);
+      border: 1px solid #4ade80;
+      color: #4ade80;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
+      animation: green-speaker-pulse 2s infinite ease-in-out;
+      transition: all 0.2s ease;
+    }
+
+    @keyframes green-speaker-pulse {
+      0% { box-shadow: 0 0 4px rgba(74, 222, 128, 0.4); transform: scale(1); }
+      50% { box-shadow: 0 0 12px rgba(74, 222, 128, 0.8); transform: scale(1.05); }
+      100% { box-shadow: 0 0 4px rgba(74, 222, 128, 0.4); transform: scale(1); }
+    }
+
+    /* Stato Attivo: Rosso Pulsante (Audio in riproduzione) */
+    .audio-tactical-btn.playing {
+      border-color: #ff2a5f;
+      color: #ff2a5f;
+      animation: red-speaker-pulse 1s infinite ease-in-out;
+    }
+
+    @keyframes red-speaker-pulse {
+      0% { box-shadow: 0 0 6px rgba(255, 42, 95, 0.6); transform: scale(0.95); }
+      50% { box-shadow: 0 0 18px rgba(255, 42, 95, 1); transform: scale(1.1); }
+      100% { box-shadow: 0 0 6px rgba(255, 42, 95, 0.6); transform: scale(0.95); }
     }
 
     /* Barra Navigazione Tattica */
@@ -116,7 +159,13 @@ l<!DOCTYPE html>
 
   <header class="bridge-header">
     <div class="pulsing-title">Nowcasting Italia Dashboard</div>
-    <div class="status-ok">● TACTICAL OK</div>
+    <div class="header-right-group">
+      <!-- Pulsante Altoparlante Tattico -->
+      <button id="audio-btn" class="audio-tactical-btn" onclick="toggleMusic()" title="Attiva/Disattiva Audio Tattico">
+        🔊
+      </button>
+      <div class="status-ok">● TACTICAL OK</div>
+    </div>
   </header>
 
   <nav class="tactical-nav">
@@ -143,6 +192,60 @@ l<!DOCTYPE html>
       document.getElementById('viewscreen-iframe').src = url;
       document.querySelectorAll('.tactical-btn').forEach(b => b.classList.remove('active'));
       btnElement.classList.add('active');
+    }
+
+    // Sintetizzatore Audio di Bordo (Web Audio API)
+    let audioCtx = null;
+    let osc1 = null, osc2 = null, gainNode = null, filterNode = null;
+    let isPlaying = false;
+
+    function toggleMusic() {
+      const btn = document.getElementById('audio-btn');
+      
+      if (!isPlaying) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!audioCtx) {
+          audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        osc1 = audioCtx.createOscillator();
+        osc2 = audioCtx.createOscillator();
+        gainNode = audioCtx.createGain();
+        filterNode = audioCtx.createBiquadFilter();
+
+        osc1.type = 'sawtooth';
+        osc1.frequency.setValueAtTime(65.41, audioCtx.currentTime);
+        
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(130.81, audioCtx.currentTime);
+
+        filterNode.type = 'lowpass';
+        filterNode.frequency.setValueAtTime(300, audioCtx.currentTime);
+
+        gainNode.gain.setValueAtTime(0.06, audioCtx.currentTime);
+
+        osc1.connect(filterNode);
+        osc2.connect(filterNode);
+        filterNode.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc1.start();
+        osc2.start();
+
+        isPlaying = true;
+        btn.classList.add('playing');
+        btn.innerText = '🎶';
+      } else {
+        if (osc1) { osc1.stop(); osc1.disconnect(); }
+        if (osc2) { osc2.stop(); osc2.disconnect(); }
+        
+        isPlaying = false;
+        btn.classList.remove('playing');
+        btn.innerText = '🔊';
+      }
     }
   </script>
 
