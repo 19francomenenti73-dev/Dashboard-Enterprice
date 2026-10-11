@@ -57,7 +57,7 @@
       font-weight: 800;
     }
 
-    /* Pulsante Audio Tattico: Verde in Standby */
+    /* Pulsante Tattico: Verde in Standby, pulsa */
     .audio-tactical-btn {
       background: rgba(8, 14, 28, 0.9);
       border: 1px solid #4ade80;
@@ -81,7 +81,7 @@
       100% { box-shadow: 0 0 4px rgba(74, 222, 128, 0.4); transform: scale(1); }
     }
 
-    /* Stato Attivo: Rosso Pulsante (Audio in riproduzione) */
+    /* Stato Attivo: Rosso Pulsante (Musica in riproduzione) */
     .audio-tactical-btn.playing {
       border-color: #ff2a5f;
       color: #ff2a5f;
@@ -160,13 +160,16 @@
   <header class="bridge-header">
     <div class="pulsing-title">Nowcasting Italia Dashboard</div>
     <div class="header-right-group">
-      <!-- Pulsante Altoparlante Tattico -->
-      <button id="audio-btn" class="audio-tactical-btn" onclick="toggleMusic()" title="Attiva/Disattiva Audio Tattico">
+      <!-- Pulsante Tattico Altoparlante -->
+      <button id="audio-btn" class="audio-tactical-btn" onclick="toggleMusic()" title="Attiva/Disattiva Colonna Sonora">
         🔊
       </button>
       <div class="status-ok">● TACTICAL OK</div>
     </div>
   </header>
+
+  <!-- Traccia audio musicale in streaming diretto (nessun file da caricare su GitHub) -->
+  <audio id="tactical-audio" src="https://ia800300.us.archive.org/15/items/synthwave-sample-loop/synthwave-sample.mp3" loop preload="auto"></audio>
 
   <nav class="tactical-nav">
     <button class="tactical-btn active" onclick="switchTracker('./3d-mesoscale.html', this)">
@@ -189,74 +192,25 @@
 
   <script>
     function switchTracker(url, btnElement) {
-      document.getElementById('viewscreen-iframe'].src = url;
+      document.getElementById('viewscreen-iframe').src = url;
       document.querySelectorAll('.tactical-btn').forEach(b => b.classList.remove('active'));
       btnElement.classList.add('active');
     }
 
-    // Sintetizzatore Ambient Spaziale (Pulito e Armonico)
-    let audioCtx = null;
-    let oscs = [];
-    let gainNode = null;
-    let isPlaying = false;
-
     function toggleMusic() {
+      const audio = document.getElementById('tactical-audio');
       const btn = document.getElementById('audio-btn');
-      
-      if (!isPlaying) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!audioCtx) {
-          audioCtx = new AudioContext();
-        }
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
 
-        // Accordatura spaziale in armonia (Frequenze pulite in accordo di pad elettronico)
-        const freqs = [220, 329.63, 440, 554.37]; 
-        oscs = [];
-
-        gainNode = audioCtx.createGain();
-        gainNode.gain.setValueAtTime(0.001, audioCtx.currentTime);
-        // Effetto dissolvenza in apertura per evitare scatti
-        gainNode.gain.linearRampToValueAtTime(0.07, audioCtx.currentTime + 1.2);
-        gainNode.connect(audioCtx.destination);
-
-        freqs.forEach((f, index) => {
-          const osc = audioCtx.createOscillator();
-          // Usiamo onde sinusoidali e triangolari per un suono morbido e futuristico (niente motori!)
-          osc.type = index % 2 === 0 ? 'sine' : 'triangle';
-          osc.frequency.setValueAtTime(f, audioCtx.currentTime);
-          
-          // Leggerissimo detune per creare un effetto spaziale avvolgente (tipo coro o pad analogico)
-          osc.detune.setValueAtTime(index * 2.5, audioCtx.currentTime);
-
-          osc.connect(gainNode);
-          osc.start();
-          oscs.push(osc);
+      if (audio.paused) {
+        audio.play().then(() => {
+          btn.classList.add('playing');
+          btn.innerText = '🎶';
+        }).catch(err => {
+          console.log("Riproduzione bloccata o errore di rete:", err);
+          alert("Impossibile avviare l'audio. Verifica la connessione.");
         });
-
-        isPlaying = true;
-        btn.classList.add('playing');
-        btn.innerText = '🎶';
       } else {
-        if (gainNode && audioCtx) {
-          // Dissolvenza in chiusura pulita
-          gainNode.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-          setTimeout(() => {
-            oscs.forEach(osc => {
-              try { osc.stop(); osc.disconnect(); } catch(e){}
-            });
-            oscs = [];
-          }, 400);
-        } else {
-          oscs.forEach(osc => {
-            try { osc.stop(); osc.disconnect(); } catch(e){}
-          });
-          oscs = [];
-        }
-        
-        isPlaying = false;
+        audio.pause();
         btn.classList.remove('playing');
         btn.innerText = '🔊';
       }
