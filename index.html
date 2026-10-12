@@ -12,7 +12,6 @@
       box-sizing: border-box; 
     }
 
-    /* Blocchiamo totalmente lo scroll alla radice */
     html, body {
       width: 100%;
       height: 100%;
@@ -26,23 +25,23 @@
       inset: 0;
     }
 
-    /* Header Compatto Fisso in alto */
+    /* Header Compatto */
     .bridge-header {
       width: 100%;
-      height: 38px;
-      min-height: 38px;
+      height: 34px;
+      min-height: 34px;
       background: #080e1c;
       border-bottom: 2px solid #00f0ff;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 10px;
+      padding: 0 8px;
       flex-shrink: 0;
       z-index: 10;
     }
 
     .pulsing-title {
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 900;
       color: #00f0ff;
       letter-spacing: 1px;
@@ -59,7 +58,7 @@
     .header-right-group {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .status-ok {
@@ -72,15 +71,14 @@
       background: rgba(8, 14, 28, 0.9);
       border: 1px solid #4ade80;
       color: #4ade80;
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      font-size: 12px;
-      box-shadow: 0 0 6px rgba(74, 222, 128, 0.4);
+      font-size: 11px;
     }
 
     .audio-tactical-btn.playing {
@@ -88,11 +86,11 @@
       color: #ff2a5f;
     }
 
-    /* Barra Navigazione Compatta Scorrevole in orizzontale */
+    /* Barra Navigazione Compatta */
     .tactical-nav {
       width: 100%;
-      height: 38px;
-      min-height: 38px;
+      height: 34px;
+      min-height: 34px;
       background: #0d1527;
       border-bottom: 1px solid rgba(0, 240, 255, 0.3);
       display: flex;
@@ -110,12 +108,11 @@
       background: rgba(13, 25, 48, 0.9);
       color: #00f0ff;
       border: 1px solid rgba(0, 240, 255, 0.4);
-      padding: 3px 8px;
+      padding: 2px 6px;
       border-radius: 4px;
-      font-size: 8.5px;
+      font-size: 8px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
       cursor: pointer;
       flex-shrink: 0;
     }
@@ -124,19 +121,18 @@
       background: #00f0ff;
       color: #030712;
       font-weight: 900;
-      box-shadow: 0 0 8px rgba(0, 240, 255, 0.8);
     }
 
     .tactical-btn.amber { border-color: #facc15; color: #facc15; }
-    .tactical-btn.amber.active { background: #facc15; color: #030712; box-shadow: 0 0 8px rgba(250, 204, 21, 0.8); }
+    .tactical-btn.amber.active { background: #facc15; color: #030712; }
 
     .tactical-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
-    .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 8px rgba(255, 42, 95, 0.8); }
+    .tactical-btn.alert.active { background: #ff2a5f; color: #fff; }
 
-    /* Contenitore Mappa calibrato al millimetro per non sforare */
+    /* Contenitore Mappa calibrato sottraendo esattamente 68px */
     .viewscreen-container {
       width: 100%;
-      height: calc(100dvh - 76px);
+      height: calc(100dvh - 68px);
       background: #000;
       overflow: hidden;
       flex-grow: 1;
