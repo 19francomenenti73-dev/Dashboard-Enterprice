@@ -12,17 +12,15 @@
       box-sizing: border-box; 
     }
 
+    /* Layout a 100% per adattarsi perfettamente al blocco di Google Sites */
     html, body {
       width: 100%;
       height: 100%;
-      height: 100dvh;
       background: #030712;
       font-family: system-ui, -apple-system, sans-serif;
       display: flex;
       flex-direction: column;
-      overflow: hidden !important;
-      position: fixed;
-      inset: 0;
+      overflow: hidden;
     }
 
     /* Header Compatto */
@@ -129,13 +127,12 @@
     .tactical-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
     .tactical-btn.alert.active { background: #ff2a5f; color: #fff; }
 
-    /* Contenitore Mappa calibrato sottraendo esattamente 68px */
+    /* Contenitore Mappa: occupa esattamente tutto lo spazio rimanente via flex */
     .viewscreen-container {
       width: 100%;
-      height: calc(100dvh - 68px);
+      flex: 1;
       background: #000;
       overflow: hidden;
-      flex-grow: 1;
     }
 
     #viewscreen-iframe {
