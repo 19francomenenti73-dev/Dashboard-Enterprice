@@ -57,7 +57,7 @@
       font-weight: 800;
     }
 
-    /* Pulsante Tattico: Verde in Standby, pulsa */
+    /* Pulsante Tattico Altoparlante */
     .audio-tactical-btn {
       background: rgba(8, 14, 28, 0.9);
       border: 1px solid #4ade80;
@@ -81,7 +81,6 @@
       100% { box-shadow: 0 0 4px rgba(74, 222, 128, 0.4); transform: scale(1); }
     }
 
-    /* Stato Attivo: Rosso Pulsante (Musica in riproduzione) */
     .audio-tactical-btn.playing {
       border-color: #ff2a5f;
       color: #ff2a5f;
@@ -160,7 +159,6 @@
   <header class="bridge-header">
     <div class="pulsing-title">Nowcasting Italia Dashboard</div>
     <div class="header-right-group">
-      <!-- Pulsante Tattico Altoparlante -->
       <button id="audio-btn" class="audio-tactical-btn" onclick="toggleMusic()" title="Attiva/Disattiva Colonna Sonora">
         🔊
       </button>
@@ -168,11 +166,10 @@
     </div>
   </header>
 
-  <!-- Traccia audio MP3 caricata su Catbox -->
   <audio id="tactical-audio" src="https://files.catbox.moe/ltr70o.mp3" loop preload="auto"></audio>
 
   <nav class="tactical-nav">
-    <button class="tactical-btn active" onclick="switchTracker('3d-mesoscale.html', this)">
+    <button class="tactical-btn active" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/3d-mesoscale.html', this)">
       ⚡ 3D Mesoscala
     </button>
     <button class="tactical-btn amber" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/', this)">
@@ -184,7 +181,7 @@
     <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">
       🌐 Mesoscale TITAN
     </button>
-    <button class="tactical-btn" onclick="switchTracker('global-centroids.html', this)">
+    <button class="tactical-btn" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/global-centroids.html', this)">
       🌍 Centroids
     </button>
     <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/archivio-eventi/', this)">
@@ -193,24 +190,12 @@
   </nav>
 
   <div class="viewscreen-container">
-    <iframe id="viewscreen-iframe" allowfullscreen></iframe>
+    <iframe id="viewscreen-iframe" src="https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/3d-mesoscale.html" allowfullscreen></iframe>
   </div>
 
   <script>
-    // Risolve automaticamente la base URL di GitHub Pages per evitare il blocco di Google Sites
-    const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-
-    // Imposta il caricamento iniziale del primo tracker in modo assoluto sicuro
-    window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('viewscreen-iframe').src = baseUrl + '3d-mesoscale.html';
-    });
-
-    function switchTracker(urlOrPath, btnElement) {
-      let targetUrl = urlOrPath;
-      if (!urlOrPath.startsWith('http')) {
-        targetUrl = baseUrl + urlOrPath;
-      }
-      document.getElementById('viewscreen-iframe').src = targetUrl;
+    function switchTracker(url, btnElement) {
+      document.getElementById('viewscreen-iframe').src = url;
       document.querySelectorAll('.tactical-btn').forEach(b => b.classList.remove('active'));
       btnElement.classList.add('active');
     }
@@ -225,7 +210,6 @@
           btn.innerText = '🎶';
         }).catch(err => {
           console.log("Riproduzione bloccata o errore di rete:", err);
-          alert("Impossibile avviare l'audio. Verifica la connessione.");
         });
       } else {
         audio.pause();
