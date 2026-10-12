@@ -15,21 +15,20 @@
       overflow: hidden;
     }
 
-    /* Header Fisso */
+    /* Header Compatto */
     .bridge-header {
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 40px;
+      height: 38px;
       background: #080e1c;
       border-bottom: 2px solid #00f0ff;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 10px;
-      z-index: 20;
+      z-index: 10;
     }
 
-    /* Titolo Pulsante */
     .pulsing-title {
       font-size: 10px;
       font-weight: 900;
@@ -41,7 +40,7 @@
 
     @keyframes blue-pulse {
       0% { opacity: 0.6; text-shadow: 0 0 4px rgba(0,240,255,0.4); }
-      50% { opacity: 1; text-shadow: 0 0 14px rgba(0,240,255,0.9); }
+      50% { opacity: 1; text-shadow: 0 0 12px rgba(0,240,255,0.9); }
       100% { opacity: 0.6; text-shadow: 0 0 4px rgba(0,240,255,0.4); }
     }
 
@@ -61,15 +60,15 @@
       background: rgba(8, 14, 28, 0.9);
       border: 1px solid #4ade80;
       color: #4ade80;
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
       font-size: 12px;
-      box-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
+      box-shadow: 0 0 6px rgba(74, 222, 128, 0.4);
     }
 
     .audio-tactical-btn.playing {
@@ -77,30 +76,30 @@
       color: #ff2a5f;
     }
 
-    /* Navigazione orizzontale a scorrimento */
+    /* Barra Navigazione Compatta e Scorrevole */
     .tactical-nav {
       position: absolute;
-      top: 40px; left: 0; right: 0;
-      height: 42px;
+      top: 38px; left: 0; right: 0;
+      height: 38px;
       background: #0d1527;
       border-bottom: 1px solid rgba(0, 240, 255, 0.3);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       padding: 0 6px;
       overflow-x: auto;
       white-space: nowrap;
       -webkit-overflow-scrolling: touch;
-      z-index: 20;
+      z-index: 10;
     }
 
     .tactical-btn {
       background: rgba(13, 25, 48, 0.9);
       color: #00f0ff;
       border: 1px solid rgba(0, 240, 255, 0.4);
-      padding: 5px 10px;
+      padding: 3px 8px;
       border-radius: 4px;
-      font-size: 9px;
+      font-size: 8.5px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -112,24 +111,23 @@
       background: #00f0ff;
       color: #030712;
       font-weight: 900;
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+      box-shadow: 0 0 8px rgba(0, 240, 255, 0.8);
     }
 
     .tactical-btn.amber { border-color: #facc15; color: #facc15; }
-    .tactical-btn.amber.active { background: #facc15; color: #030712; box-shadow: 0 0 10px rgba(250, 204, 21, 0.8); }
+    .tactical-btn.amber.active { background: #facc15; color: #030712; box-shadow: 0 0 8px rgba(250, 204, 21, 0.8); }
 
     .tactical-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
-    .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 10px rgba(255, 42, 95, 0.8); }
+    .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 8px rgba(255, 42, 95, 0.8); }
 
-    /* Contenitore Mappa */
+    /* Schermo Principale Adattato */
     .viewscreen-container {
       position: absolute;
-      top: 82px; 
+      top: 76px; 
       bottom: 0; 
       left: 0; 
       right: 0;
       background: #000;
-      z-index: 1;
     }
 
     #viewscreen-iframe {
@@ -145,38 +143,24 @@
   <header class="bridge-header">
     <div class="pulsing-title">Nowcasting Italia Dashboard</div>
     <div class="header-right-group">
-      <button id="audio-btn" class="audio-tactical-btn" onclick="toggleMusic()" title="Attiva/Disattiva Colonna Sonora">
-        🔊
-      </button>
-      <div class="status-ok">● TACTICAL OK</div>
+      <button id="audio-btn" class="audio-tactical-btn" onclick="toggleMusic()" title="Colonna Sonora">🔊</button>
+      <div class="status-ok">● OK</div>
     </div>
   </header>
 
   <audio id="tactical-audio" src="https://files.catbox.moe/ltr70o.mp3" loop preload="auto"></audio>
 
   <nav class="tactical-nav">
-    <button class="tactical-btn active" onclick="switchTracker('https://19francomenenti73-dev.github.io/3d-mesoscale.html', this)">
-      ⚡ 3D Mesoscala
-    </button>
-    <button class="tactical-btn amber" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/', this)">
-      🛰️ Storm Tracker
-    </button>
-    <button class="tactical-btn amber" onclick="switchTracker('https://19francomenenti73-dev.github.io/Snow-tracker/', this)">
-      ❄️ Snow Tracker
-    </button>
-    <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">
-      🌐 Mesoscale TITAN
-    </button>
-    <button class="tactical-btn" onclick="switchTracker('https://19francomenenti73-dev.github.io/global-centroids.html', this)">
-      🌍 Centroids
-    </button>
-    <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/archivio-eventi/', this)">
-      📍 Archivio Eventi
-    </button>
+    <button class="tactical-btn active" onclick="switchTracker('https://19francomenenti73-dev.github.io/dashboard-enterprise/3d-mesoscale.html', this)">⚡ 3D Mesoscala</button>
+    <button class="tactical-btn amber" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/', this)">🛰️ Storm Tracker</button>
+    <button class="tactical-btn amber" onclick="switchTracker('https://19francomenenti73-dev.github.io/Snow-tracker/', this)">❄️ Snow Tracker</button>
+    <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">🌐 Mesoscale TITAN</button>
+    <button class="tactical-btn" onclick="switchTracker('https://19francomenenti73-dev.github.io/dashboard-enterprise/global-centroids.html', this)">🌍 Centroids</button>
+    <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/archivio-eventi/', this)">📍 Archivio Eventi</button>
   </nav>
 
   <div class="viewscreen-container">
-    <iframe id="viewscreen-iframe" src="https://19francomenenti73-dev.github.io/3d-mesoscale.html" allowfullscreen></iframe>
+    <iframe id="viewscreen-iframe" src="https://19francomenenti73-dev.github.io/dashboard-enterprise/3d-mesoscale.html" allowfullscreen></iframe>
   </div>
 
   <script>
@@ -194,9 +178,7 @@
         audio.play().then(() => {
           btn.classList.add('playing');
           btn.innerText = '🎶';
-        }).catch(err => {
-          console.log("Riproduzione bloccata o errore di rete:", err);
-        });
+        }).catch(err => console.log(err));
       } else {
         audio.pause();
         btn.classList.remove('playing');
