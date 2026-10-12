@@ -13,11 +13,12 @@
       background: #030712;
       font-family: system-ui, -apple-system, sans-serif;
       overflow: hidden;
+      position: fixed;
     }
 
     /* Header Fisso Sicuro */
     .bridge-header {
-      position: absolute;
+      position: fixed;
       top: 0; left: 0; right: 0;
       height: 44px;
       background: #080e1c;
@@ -26,7 +27,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 0 12px;
-      z-index: 10;
+      z-index: 20;
     }
 
     /* Scritta Nowcasting Italia Dashboard in blu che pulsa */
@@ -93,9 +94,9 @@
       100% { box-shadow: 0 0 6px rgba(255, 42, 95, 0.6); transform: scale(0.95); }
     }
 
-    /* Barra Navigazione Tattica originale a scorrimento orizzontale */
+    /* Barra Navigazione Tattica orizzontale fissa */
     .tactical-nav {
-      position: absolute;
+      position: fixed;
       top: 44px; left: 0; right: 0;
       height: 44px;
       background: #0d1527;
@@ -106,7 +107,7 @@
       overflow-x: auto;
       white-space: nowrap;
       -webkit-overflow-scrolling: touch;
-      z-index: 10;
+      z-index: 20;
     }
 
     .tactical-btn {
@@ -136,14 +137,16 @@
     .tactical-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
     .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 10px rgba(255, 42, 95, 0.8); }
 
-    /* Schermo Principale */
+    /* Schermo Principale Adattato a 100vh */
     .viewscreen-container {
-      position: absolute;
+      position: fixed;
       top: 88px; 
-      bottom: 0; 
       left: 0; 
       right: 0;
+      bottom: 0;
+      height: calc(100vh - 88px);
       background: #000;
+      z-index: 1;
     }
 
     #viewscreen-iframe {
