@@ -94,5 +94,128 @@
       100% { box-shadow: 0 0 6px rgba(255, 42, 95, 0.6); transform: scale(0.95); }
     }
 
-    /* Barra Navig
-    
+    /* Barra Navigazione Tattica */
+    .tactical-nav {
+      position: absolute;
+      top: 44px; left: 0; right: 0;
+      height: 44px;
+      background: #0d1527;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+      display: flex;
+      gap: 6px;
+      padding: 6px;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      z-index: 10;
+    }
+
+    .tactical-btn {
+      background: rgba(13, 25, 48, 0.9);
+      color: #00f0ff;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .tactical-btn.active {
+      background: #00f0ff;
+      color: #030712;
+      font-weight: 900;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+    }
+
+    .tactical-btn.amber { border-color: #facc15; color: #facc15; }
+    .tactical-btn.amber.active { background: #facc15; color: #030712; box-shadow: 0 0 10px rgba(250, 204, 21, 0.8); }
+
+    .tactical-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
+    .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 10px rgba(255, 42, 95, 0.8); }
+
+    /* Schermo Principale */
+    .viewscreen-container {
+      position: absolute;
+      top: 88px; 
+      bottom: 0; 
+      left: 0; 
+      right: 0;
+      background: #000;
+    }
+
+    #viewscreen-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="bridge-header">
+    <div class="pulsing-title">Nowcasting Italia Dashboard</div>
+    <div class="header-right-group">
+      <!-- Pulsante Tattico Altoparlante -->
+      <button id="audio-btn" class="audio-tactical-btn" onclick="toggleMusic()" title="Attiva/Disattiva Colonna Sonora">
+        🔊
+      </button>
+      <div class="status-ok">● TACTICAL OK</div>
+    </div>
+  </header>
+
+  <!-- Traccia audio MP3 caricata su Catbox -->
+  <audio id="tactical-audio" src="https://files.catbox.moe/ltr70o.mp3" loop preload="auto"></audio>
+
+  <nav class="tactical-nav">
+    <button class="tactical-btn active" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/', this)">
+      🛰️ Storm Tracker
+    </button>
+    <button class="tactical-btn amber" onclick="switchTracker('https://19francomenenti73-dev.github.io/Snow-tracker/', this)">
+      ❄️ Snow Tracker
+    </button>
+    <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">
+      🌐 Mesoscale TITAN
+    </button>
+    <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/archivio-eventi/', this)">
+      📍 Archivio Eventi
+    </button>
+  </nav>
+
+  <div class="viewscreen-container">
+    <iframe id="viewscreen-iframe" src="https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/" allowfullscreen></iframe>
+  </div>
+
+  <script>
+    function switchTracker(url, btnElement) {
+      document.getElementById('viewscreen-iframe').src = url;
+      document.querySelectorAll('.tactical-btn').forEach(b => b.classList.remove('active'));
+      btnElement.classList.add('active');
+    }
+
+    function toggleMusic() {
+      const audio = document.getElementById('tactical-audio');
+      const btn = document.getElementById('audio-btn');
+
+      if (audio.paused) {
+        audio.play().then(() => {
+          btn.classList.add('playing');
+          btn.innerText = '🎶';
+        }).catch(err => {
+          console.log("Riproduzione bloccata o errore di rete:", err);
+          alert("Impossibile avviare l'audio. Verifica la connessione.");
+        });
+      } else {
+        audio.pause();
+        btn.classList.remove('playing');
+        btn.innerText = '🔊';
+      }
+    }
+  </script>
+
+</body>
+</html>
