@@ -137,14 +137,13 @@
     .tactical-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
     .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 10px rgba(255, 42, 95, 0.8); }
 
-    /* Schermo Principale Adattato e Adattivo */
+    /* Schermo Principale */
     .viewscreen-container {
       position: absolute;
       top: 88px; 
       bottom: 0; 
       left: 0; 
       right: 0;
-      height: calc(100% - 88px);
       background: #000;
     }
 
@@ -173,7 +172,7 @@
   <audio id="tactical-audio" src="https://files.catbox.moe/ltr70o.mp3" loop preload="auto"></audio>
 
   <nav class="tactical-nav">
-    <button class="tactical-btn active" onclick="switchTracker('./3d-mesoscale.html', this)">
+    <button class="tactical-btn active" onclick="switchTracker('https://19francomenenti73-dev.github.io/3d-mesoscale.html', this)">
       ⚡ 3D Mesoscala
     </button>
     <button class="tactical-btn amber" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/', this)">
@@ -185,7 +184,7 @@
     <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">
       🌐 Mesoscale TITAN
     </button>
-    <button class="tactical-btn" onclick="switchTracker('./global-centroids.html', this)">
+    <button class="tactical-btn" onclick="switchTracker('https://19francomenenti73-dev.github.io/global-centroids.html', this)">
       🌍 Centroids
     </button>
     <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/archivio-eventi/', this)">
@@ -194,7 +193,7 @@
   </nav>
 
   <div class="viewscreen-container">
-    <iframe id="viewscreen-iframe" src="./3d-mesoscale.html" allowfullscreen></iframe>
+    <iframe id="viewscreen-iframe" src="https://19francomenenti73-dev.github.io/3d-mesoscale.html" allowfullscreen></iframe>
   </div>
 
   <script>
