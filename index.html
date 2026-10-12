@@ -1,227 +1,116 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Nowcasting Italia — Dashboard</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nowcasting Italia — Pannello di Controllo</title>
   
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
+    body, html {
+      margin: 0;
+      padding: 0;
       width: 100%;
       height: 100%;
-      background: #030712;
-      font-family: system-ui, -apple-system, sans-serif;
+      background-color: #0b0f19;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #ffffff;
       overflow: hidden;
     }
 
-    /* Header Fisso Sicuro */
-    .bridge-header {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 44px;
-      background: #080e1c;
-      border-bottom: 2px solid #00f0ff;
+    /* Barra superiore stile Dashboard Nowcasting Italia */
+    .dashboard-header {
+      background: #0f172a;
+      border-bottom: 1px solid #1e293b;
+      padding: 10px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      position: relative;
+    }
+
+    .dashboard-title-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 12px;
-      z-index: 10;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      color: #38bdf8;
     }
 
-    /* Scritta Nowcasting Italia Dashboard in blu che pulsa */
-    .pulsing-title {
-      font-size: 11px;
-      font-weight: 900;
-      color: #00f0ff;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      animation: blue-pulse 2s infinite ease-in-out;
-    }
-
-    @keyframes blue-pulse {
-      0% { opacity: 0.6; text-shadow: 0 0 4px rgba(0,240,255,0.4); }
-      50% { opacity: 1; text-shadow: 0 0 14px rgba(0,240,255,0.9), 0 0 22px rgba(0,240,255,0.5); }
-      100% { opacity: 0.6; text-shadow: 0 0 4px rgba(0,240,255,0.4); }
-    }
-
-    .header-right-group {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .status-ok {
-      font-size: 8px;
-      color: #4ade80;
-      font-weight: 800;
-    }
-
-    /* Pulsante Tattico: Verde in Standby, pulsa */
-    .audio-tactical-btn {
-      background: rgba(8, 14, 28, 0.9);
-      border: 1px solid #4ade80;
-      color: #4ade80;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      font-size: 14px;
-      box-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
-      animation: green-speaker-pulse 2s infinite ease-in-out;
-      transition: all 0.2s ease;
-    }
-
-    @keyframes green-speaker-pulse {
-      0% { box-shadow: 0 0 4px rgba(74, 222, 128, 0.4); transform: scale(1); }
-      50% { box-shadow: 0 0 12px rgba(74, 222, 128, 0.8); transform: scale(1.05); }
-      100% { box-shadow: 0 0 4px rgba(74, 222, 128, 0.4); transform: scale(1); }
-    }
-
-    /* Stato Attivo: Rosso Pulsante (Musica in riproduzione) */
-    .audio-tactical-btn.playing {
-      border-color: #ff2a5f;
-      color: #ff2a5f;
-      animation: red-speaker-pulse 1s infinite ease-in-out;
-    }
-
-    @keyframes red-speaker-pulse {
-      0% { box-shadow: 0 0 6px rgba(255, 42, 95, 0.6); transform: scale(0.95); }
-      50% { box-shadow: 0 0 18px rgba(255, 42, 95, 1); transform: scale(1.1); }
-      100% { box-shadow: 0 0 6px rgba(255, 42, 95, 0.6); transform: scale(0.95); }
-    }
-
-    /* Barra Navigazione Tattica */
-    .tactical-nav {
-      position: absolute;
-      top: 44px; left: 0; right: 0;
-      height: 44px;
-      background: #0d1527;
-      border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+    .tracker-nav {
       display: flex;
       gap: 6px;
-      padding: 6px;
       overflow-x: auto;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-      z-index: 10;
+      padding-bottom: 2px;
     }
 
-    .tactical-btn {
-      background: rgba(13, 25, 48, 0.9);
-      color: #00f0ff;
-      border: 1px solid rgba(0, 240, 255, 0.4);
-      padding: 4px 10px;
+    .tracker-btn {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      padding: 6px 12px;
       border-radius: 4px;
-      font-size: 9px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: bold;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s;
     }
 
-    .tactical-btn.active {
-      background: #00f0ff;
-      color: #030712;
-      font-weight: 900;
-      box-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+    .tracker-btn:hover, .tracker-btn.active {
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #fff;
     }
 
-    .tactical-btn.amber { border-color: #facc15; color: #facc15; }
-    .tactical-btn.amber.active { background: #facc15; color: #030712; box-shadow: 0 0 10px rgba(250, 204, 21, 0.8); }
-
-    .tactical-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
-    .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 10px rgba(255, 42, 95, 0.8); }
-
-    /* Bottone Neve Azzurro Ghiaccio */
-    .tactical-btn.snow { border-color: #7ee787; color: #7ee787; }
-    .tactical-btn.snow.active { background: #7ee787; color: #030712; box-shadow: 0 0 10px rgba(126, 231, 135, 0.8); }
-
-    /* Schermo Principale */
-    .viewscreen-container {
-      position: absolute;
-      top: 88px; 
-      bottom: 0; 
-      left: 0; 
-      right: 0;
-      background: #000;
-    }
-
-    #viewscreen-iframe {
+    /* Mappa */
+    #map {
       width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
+      height: calc(100vh - 95px);
+      background: #0b0f19;
     }
   </style>
 </head>
 <body>
 
-  <header class="bridge-header">
-    <div class="pulsing-title">Nowcasting Italia Dashboard</div>
-    <div class="header-right-group">
-      <!-- Pulsante Tattico Altoparlante -->
-      <button id="audio-btn" class="audio-tactical-btn" onclick="toggleMusic()" title="Attiva/Disattiva Colonna Sonora">
-        🔊
-      </button>
-      <div class="status-ok">● TACTICAL OK</div>
+  <!-- Barra superiore di navigazione tra i tracker del sito -->
+  <div class="dashboard-header">
+    <div class="dashboard-title-row">
+      <span>❄ NOWCASTING ITALIA — PANNELLO DI CONTROLLO</span>
+      <span style="color: #cbd5e1; font-weight: normal;">• LIVE & 3H PREDICTIVE ADVECTION</span>
     </div>
-  </header>
-
-  <!-- Traccia audio MP3 caricata su Catbox -->
-  <audio id="tactical-audio" src="https://files.catbox.moe/ltr70o.mp3" loop preload="auto"></audio>
-
-  <nav class="tactical-nav">
-    <button class="tactical-btn active" onclick="switchTracker('./3d-mesoscale.html', this)">
-      ⚡ 3D Mesoscala
-    </button>
-    <button class="tactical-btn amber" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/', this)">
-      🛰️ Storm Tracker
-    </button>
-    <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">
-      🌐 Mesoscale TITAN
-    </button>
-    <button class="tactical-btn snow" onclick="switchTracker('https://19francomenenti73-dev.github.io/Snow-tracker/', this)">
-      ❄️ Snow Tracker
-    </button>
-    <button class="tactical-btn" onclick="switchTracker('./global-centroids.html', this)">
-      🌍 Centroids
-    </button>
-  </nav>
-
-  <div class="viewscreen-container">
-    <iframe id="viewscreen-iframe" src="./3d-mesoscale.html" allowfullscreen></iframe>
+    <div class="tracker-nav">
+      <a href="#" class="tracker-btn active">🏠 Pannello Controllo</a>
+      <a href="https://sites.google.com/view/nowcasting-italia/satellite-infrarosso" class="tracker-btn">🛰 Satellite IR</a>
+      <a href="https://sites.google.com/view/nowcasting-italia/cape-italia" class="tracker-btn">⚡ CAPE Italia</a>
+      <a href="https://sites.google.com/view/nowcasting-italia/global-lightning-detector" class="tracker-btn">⚡ Lightning</a>
+      <a href="https://19francomenenti73-dev.github.io/archivio-eventi/" target="_blank" class="tracker-btn" style="background-color: #1e3a8a; border-color: #3b82f6;">📍 Archivio Eventi</a>
+    </div>
   </div>
 
+  <!-- Contenitore Mappa -->
+  <div id="map"></div>
+
   <script>
-    function switchTracker(url, btnElement) {
-      document.getElementById('viewscreen-iframe').src = url;
-      document.querySelectorAll('.tactical-btn').forEach(b => b.classList.remove('active'));
-      btnElement.classList.add('active');
-    }
+    // Inizializzazione mappa
+    var map = L.map('map', {
+      zoomControl: false
+    }).setView([42.3, 12.5], 6);
 
-    function toggleMusic() {
-      const audio = document.getElementById('tactical-audio');
-      const btn = document.getElementById('audio-btn');
+    L.control.zoom({ position: 'topright' }).addTo(map);
 
-      if (audio.paused) {
-        audio.play().then(() => {
-          btn.classList.add('playing');
-          btn.innerText = '🎶';
-        }).catch(err => {
-          console.log("Riproduzione bloccata o errore di rete:", err);
-          alert("Impossibile avviare l'audio. Verifica la connessione.");
-        });
-      } else {
-        audio.pause();
-        btn.classList.remove('playing');
-        btn.innerText = '🔊';
-      }
-    }
+    // Layer cartografico a rilievo fisico Esri (Snow Tracker style)
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri &mdash; Source: US National Park Service',
+      maxZoom: 9
+    }).addTo(map);
   </script>
 
 </body>
