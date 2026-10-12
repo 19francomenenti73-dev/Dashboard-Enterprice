@@ -137,6 +137,10 @@
     .tactical-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
     .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 10px rgba(255, 42, 95, 0.8); }
 
+    /* Bottone Neve Azzurro Ghiaccio */
+    .tactical-btn.snow { border-color: #7ee787; color: #7ee787; }
+    .tactical-btn.snow.active { background: #7ee787; color: #030712; box-shadow: 0 0 10px rgba(126, 231, 135, 0.8); }
+
     /* Schermo Principale */
     .viewscreen-container {
       position: absolute;
@@ -180,6 +184,9 @@
     </button>
     <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">
       🌐 Mesoscale TITAN
+    </button>
+    <button class="tactical-btn snow" onclick="switchTracker('https://19francomenenti73-dev.github.io/Snow-tracker/', this)">
+      ❄️ Snow Tracker
     </button>
     <button class="tactical-btn" onclick="switchTracker('./global-centroids.html', this)">
       🌍 Centroids
