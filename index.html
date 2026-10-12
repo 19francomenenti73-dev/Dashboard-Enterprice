@@ -13,12 +13,11 @@
       background: #030712;
       font-family: system-ui, -apple-system, sans-serif;
       overflow: hidden;
-      position: fixed;
     }
 
     /* Header Fisso Sicuro */
     .bridge-header {
-      position: fixed;
+      position: absolute;
       top: 0; left: 0; right: 0;
       height: 44px;
       background: #080e1c;
@@ -27,7 +26,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 0 12px;
-      z-index: 20;
+      z-index: 10;
     }
 
     /* Scritta Nowcasting Italia Dashboard in blu che pulsa */
@@ -58,7 +57,7 @@
       font-weight: 800;
     }
 
-    /* Pulsante Tattico Altoparlante */
+    /* Pulsante Tattico: Verde in Standby, pulsa */
     .audio-tactical-btn {
       background: rgba(8, 14, 28, 0.9);
       border: 1px solid #4ade80;
@@ -82,6 +81,7 @@
       100% { box-shadow: 0 0 4px rgba(74, 222, 128, 0.4); transform: scale(1); }
     }
 
+    /* Stato Attivo: Rosso Pulsante (Musica in riproduzione) */
     .audio-tactical-btn.playing {
       border-color: #ff2a5f;
       color: #ff2a5f;
@@ -94,9 +94,9 @@
       100% { box-shadow: 0 0 6px rgba(255, 42, 95, 0.6); transform: scale(0.95); }
     }
 
-    /* Barra Navigazione Tattica orizzontale fissa */
+    /* Barra Navigazione Tattica originale a scorrimento orizzontale */
     .tactical-nav {
-      position: fixed;
+      position: absolute;
       top: 44px; left: 0; right: 0;
       height: 44px;
       background: #0d1527;
@@ -107,7 +107,7 @@
       overflow-x: auto;
       white-space: nowrap;
       -webkit-overflow-scrolling: touch;
-      z-index: 20;
+      z-index: 10;
     }
 
     .tactical-btn {
@@ -137,16 +137,15 @@
     .tactical-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
     .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 10px rgba(255, 42, 95, 0.8); }
 
-    /* Schermo Principale Adattato a 100vh */
+    /* Schermo Principale Adattato e Adattivo */
     .viewscreen-container {
-      position: fixed;
+      position: absolute;
       top: 88px; 
+      bottom: 0; 
       left: 0; 
       right: 0;
-      bottom: 0;
-      height: calc(100vh - 88px);
+      height: calc(100% - 88px);
       background: #000;
-      z-index: 1;
     }
 
     #viewscreen-iframe {
@@ -162,6 +161,7 @@
   <header class="bridge-header">
     <div class="pulsing-title">Nowcasting Italia Dashboard</div>
     <div class="header-right-group">
+      <!-- Pulsante Tattico Altoparlante -->
       <button id="audio-btn" class="audio-tactical-btn" onclick="toggleMusic()" title="Attiva/Disattiva Colonna Sonora">
         🔊
       </button>
@@ -169,10 +169,11 @@
     </div>
   </header>
 
+  <!-- Traccia audio MP3 caricata su Catbox -->
   <audio id="tactical-audio" src="https://files.catbox.moe/ltr70o.mp3" loop preload="auto"></audio>
 
   <nav class="tactical-nav">
-    <button class="tactical-btn active" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/3d-mesoscale.html', this)">
+    <button class="tactical-btn active" onclick="switchTracker('./3d-mesoscale.html', this)">
       ⚡ 3D Mesoscala
     </button>
     <button class="tactical-btn amber" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/', this)">
@@ -184,7 +185,7 @@
     <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">
       🌐 Mesoscale TITAN
     </button>
-    <button class="tactical-btn" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/global-centroids.html', this)">
+    <button class="tactical-btn" onclick="switchTracker('./global-centroids.html', this)">
       🌍 Centroids
     </button>
     <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/archivio-eventi/', this)">
@@ -193,7 +194,7 @@
   </nav>
 
   <div class="viewscreen-container">
-    <iframe id="viewscreen-iframe" src="https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/3d-mesoscale.html" allowfullscreen></iframe>
+    <iframe id="viewscreen-iframe" src="./3d-mesoscale.html" allowfullscreen></iframe>
   </div>
 
   <script>
@@ -213,6 +214,7 @@
           btn.innerText = '🎶';
         }).catch(err => {
           console.log("Riproduzione bloccata o errore di rete:", err);
+          alert("Impossibile avviare l'audio. Verifica la connessione.");
         });
       } else {
         audio.pause();
