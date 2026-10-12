@@ -15,7 +15,7 @@
       overflow: hidden;
     }
 
-    /* Header Fisso */
+    /* Header Fisso Sicuro */
     .bridge-header {
       position: absolute;
       top: 0; left: 0; right: 0;
@@ -57,7 +57,7 @@
       font-weight: 800;
     }
 
-    /* Pulsante Tattico Altoparlante */
+    /* Pulsante Tattico: Verde in Standby, pulsa */
     .audio-tactical-btn {
       background: rgba(8, 14, 28, 0.9);
       border: 1px solid #4ade80;
@@ -81,6 +81,7 @@
       100% { box-shadow: 0 0 4px rgba(74, 222, 128, 0.4); transform: scale(1); }
     }
 
+    /* Stato Attivo: Rosso Pulsante (Musica in riproduzione) */
     .audio-tactical-btn.playing {
       border-color: #ff2a5f;
       color: #ff2a5f;
@@ -113,20 +114,28 @@
       background: rgba(13, 25, 48, 0.9);
       color: #00f0ff;
       border: 1px solid rgba(0, 240, 255, 0.4);
-      padding: 6px 12px;
+      padding: 4px 10px;
       border-radius: 4px;
       font-size: 9px;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
+      cursor: pointer;
       flex-shrink: 0;
     }
 
+    .tactical-btn.active {
+      background: #00f0ff;
+      color: #030712;
+      font-weight: 900;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+    }
+
     .tactical-btn.amber { border-color: #facc15; color: #facc15; }
+    .tactical-btn.amber.active { background: #facc15; color: #030712; box-shadow: 0 0 10px rgba(250, 204, 21, 0.8); }
+
     .tactical-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
+    .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 10px rgba(255, 42, 95, 0.8); }
 
     /* Schermo Principale */
     .viewscreen-container {
@@ -151,6 +160,7 @@
   <header class="bridge-header">
     <div class="pulsing-title">Nowcasting Italia Dashboard</div>
     <div class="header-right-group">
+      <!-- Pulsante Tattico Altoparlante -->
       <button id="audio-btn" class="audio-tactical-btn" onclick="toggleMusic()" title="Attiva/Disattiva Colonna Sonora">
         🔊
       </button>
@@ -158,25 +168,38 @@
     </div>
   </header>
 
+  <!-- Traccia audio MP3 caricata su Catbox -->
   <audio id="tactical-audio" src="https://files.catbox.moe/ltr70o.mp3" loop preload="auto"></audio>
 
   <nav class="tactical-nav">
-    <a href="https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/" target="_top" class="tactical-btn amber">
+    <button class="tactical-btn active" onclick="switchTracker('./3d-mesoscale.html', this)">
+      ⚡ 3D Mesoscala
+    </button>
+    <button class="tactical-btn amber" onclick="switchTracker('https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/', this)">
       🛰️ Storm Tracker
-    </a>
-    <a href="https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/" target="_top" class="tactical-btn alert">
+    </button>
+    <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/NOWCASTING-ITALIA-TITAN-CONVECTIVE-TRACKER/', this)">
       🌐 Mesoscale TITAN
-    </a>
-    <a href="https://19francomenenti73-dev.github.io/archivio-eventi/" target="_top" class="tactical-btn alert">
+    </button>
+    <button class="tactical-btn" onclick="switchTracker('./global-centroids.html', this)">
+      🌍 Centroids
+    </button>
+    <button class="tactical-btn alert" onclick="switchTracker('https://19francomenenti73-dev.github.io/archivio-eventi/', this)">
       📍 Archivio Eventi
-    </a>
+    </button>
   </nav>
 
   <div class="viewscreen-container">
-    <iframe id="viewscreen-iframe" src="https://19francomenenti73-dev.github.io/3D-Nowcasting-Italia-Storm-Tracker/"></iframe>
+    <iframe id="viewscreen-iframe" src="./3d-mesoscale.html" allowfullscreen></iframe>
   </div>
 
   <script>
+    function switchTracker(url, btnElement) {
+      document.getElementById('viewscreen-iframe').src = url;
+      document.querySelectorAll('.tactical-btn').forEach(b => b.classList.remove('active'));
+      btnElement.classList.add('active');
+    }
+
     function toggleMusic() {
       const audio = document.getElementById('tactical-audio');
       const btn = document.getElementById('audio-btn');
@@ -187,6 +210,7 @@
           btn.innerText = '🎶';
         }).catch(err => {
           console.log("Riproduzione bloccata o errore di rete:", err);
+          alert("Impossibile avviare l'audio. Verifica la connessione.");
         });
       } else {
         audio.pause();
