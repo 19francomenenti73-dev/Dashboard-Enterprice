@@ -12,7 +12,7 @@
       box-sizing: border-box; 
     }
 
-    /* Layout a schermata fissa unica, senza alcuno scroll verticale */
+    /* Blocchiamo totalmente lo scroll alla radice */
     html, body {
       width: 100%;
       height: 100%;
@@ -21,7 +21,9 @@
       font-family: system-ui, -apple-system, sans-serif;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow: hidden !important;
+      position: fixed;
+      inset: 0;
     }
 
     /* Header Compatto Fisso in alto */
@@ -131,12 +133,13 @@
     .tactical-btn.alert { border-color: #ff2a5f; color: #ff2a5f; }
     .tactical-btn.alert.active { background: #ff2a5f; color: #fff; box-shadow: 0 0 8px rgba(255, 42, 95, 0.8); }
 
-    /* Contenitore Mappa: si prende esattamente lo spazio rimanente al pixel */
+    /* Contenitore Mappa calibrato al millimetro per non sforare */
     .viewscreen-container {
       width: 100%;
-      flex: 1;
-      min-height: 0;
+      height: calc(100dvh - 76px);
       background: #000;
+      overflow: hidden;
+      flex-grow: 1;
     }
 
     #viewscreen-iframe {
