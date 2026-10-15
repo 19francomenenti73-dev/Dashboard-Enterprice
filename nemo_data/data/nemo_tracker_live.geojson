@@ -20,7 +20,7 @@
         "speed_kmh": 45,
         "color": "#FF00FF",
         "pulsing": true,
-        "timestamp": "2026-10-15T04:13:45.075304+00:00"
+        "timestamp": "2026-10-15T04:25:51.136361+00:00"
       }
     },
     {
@@ -67,7 +67,7 @@
         "element_type": "FORECAST_3H",
         "color": "#FF00FF",
         "style": "solid",
-        "eta": "07:13 UTC"
+        "eta": "07:25 UTC"
       }
     },
     {
@@ -90,7 +90,7 @@
         "color": "#FF00FF",
         "style": "dashed",
         "pulsing": true,
-        "eta": "10:13 UTC"
+        "eta": "10:25 UTC"
       }
     },
     {
@@ -105,8 +105,8 @@
       "properties": {
         "element_type": "ETA_MARKER",
         "color": "#00FF00",
-        "eta_time": "10:13 UTC",
-        "popup_text": "Arrivo Stimato (ETA): 10:13 UTC"
+        "eta_time": "10:25 UTC",
+        "popup_text": "Arrivo Stimato (ETA): 10:25 UTC"
       }
     }
   ]

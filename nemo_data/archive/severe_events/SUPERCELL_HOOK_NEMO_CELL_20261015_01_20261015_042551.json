@@ -1,0 +1,33 @@
+{
+  "system_id": "NEMO_CELL_20261015_01",
+  "structure": "SUPERCELL_HOOK",
+  "timestamp": "2026-10-15T04:25:51.136361+00:00",
+  "snapshot": {
+    "id": "NEMO_CELL_20261015_01",
+    "lat": 41.89,
+    "lon": 12.51,
+    "max_dbz": 56,
+    "echo_top_km": 14.5,
+    "vil_kg_m2": 48.2,
+    "speed_kmh": 45,
+    "has_hook_echo": true,
+    "rotation_detected": true,
+    "is_v_shape": false,
+    "is_tlc": false,
+    "past_coordinates": [
+      [
+        12.35,
+        41.8
+      ],
+      [
+        12.42,
+        41.84
+      ],
+      [
+        12.51,
+        41.89
+      ]
+    ]
+  },
+  "status": "LOCKED_FOR_SCIENTIFIC_STUDY"
+}
