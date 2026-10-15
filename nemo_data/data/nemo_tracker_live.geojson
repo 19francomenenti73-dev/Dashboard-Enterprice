@@ -1,0 +1,113 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.51,
+          41.89
+        ]
+      },
+      "properties": {
+        "element_type": "CENTROID_RING",
+        "cell_id": "NEMO_CELL_20261015_01",
+        "structure_type": "SUPERCELL_HOOK",
+        "max_dbz": 56,
+        "echo_top_km": 14.5,
+        "vil": 48.2,
+        "speed_kmh": 45,
+        "color": "#FF00FF",
+        "pulsing": true,
+        "timestamp": "2026-10-15T04:13:45.075304+00:00"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            12.35,
+            41.8
+          ],
+          [
+            12.42,
+            41.84
+          ],
+          [
+            12.51,
+            41.89
+          ]
+        ]
+      },
+      "properties": {
+        "element_type": "PAST_PATH",
+        "color": "#00BFFF",
+        "style": "solid"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            12.51,
+            41.89
+          ],
+          [
+            12.86,
+            42.14
+          ]
+        ]
+      },
+      "properties": {
+        "element_type": "FORECAST_3H",
+        "color": "#FF00FF",
+        "style": "solid",
+        "eta": "07:13 UTC"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            12.86,
+            42.14
+          ],
+          [
+            13.21,
+            42.39
+          ]
+        ]
+      },
+      "properties": {
+        "element_type": "FORECAST_6H",
+        "color": "#FF00FF",
+        "style": "dashed",
+        "pulsing": true,
+        "eta": "10:13 UTC"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.21,
+          42.39
+        ]
+      },
+      "properties": {
+        "element_type": "ETA_MARKER",
+        "color": "#00FF00",
+        "eta_time": "10:13 UTC",
+        "popup_text": "Arrivo Stimato (ETA): 10:13 UTC"
+      }
+    }
+  ]
+}
